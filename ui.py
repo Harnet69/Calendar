@@ -1,4 +1,5 @@
 import os
+import storage
 
 
 def print_menu(menu_list, name_menu="Menu:\n"):
@@ -25,7 +26,9 @@ def user_input(user_question_list, message):
 def choose(user_answers):
     if user_answers[0] == 's':
         os.system('clear')
-        print("Schedule a new meeting.\n")
-        user_input([''], "Give title, duration and start time of the meeting:")
+        print("Schedule a new meeting.\n 'Give title, duration and start time of the meeting: ")
+        user_data = user_input(['Enter meeting title: ', 'Enter duration in hours (1 or 2): ',
+                     'Enter start time: '], "")
+        storage.write_data_to_file('schedule.csv', user_data)
     if user_answers[0] == '(q)':
         os.sys.exit(0)
