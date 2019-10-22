@@ -1,1 +1,5 @@
-"Make a choice:"
+    os.system('clear')
+    ui.print_schedule('schedule.csv')
+    ui.print_menu(menu_list)
+    user_answers = ui.user_input([''], "Make a choice:")
+    ui.choose(user_answers)
