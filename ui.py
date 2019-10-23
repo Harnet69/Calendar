@@ -1,7 +1,9 @@
 import os
 import storage
+import scripts
 
 
+# print menu
 def print_menu(menu_list, name_menu='Menu:'):
     menu_list['(q)'] = "quit"
     print(name_menu)
@@ -10,11 +12,14 @@ def print_menu(menu_list, name_menu='Menu:'):
     print('\n')
 
 
+# print schedule
 def print_schedule(file_name):
     os.system('clear')
     schedule = storage.get_data_from_file(file_name)
+    converted_schedule = scripts.convert_schedule(schedule)
+    sorted_schedule = scripts.sort_schedule(converted_schedule)
     print('Your schedule for the day:')
-    for task in schedule:
+    for task in sorted_schedule:
         activity = task[0]
         start_time = int(task[2])
         duration = int(task[1])
@@ -23,7 +28,8 @@ def print_schedule(file_name):
     print('\n')
 
 
-def user_input(user_question_list, message):
+# Get input from user
+def get_user_input(user_question_list, message):
     user_answers = []
     for item in user_question_list:
         print(message)

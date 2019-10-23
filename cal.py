@@ -19,7 +19,7 @@ def main():
         menu_list = {'(s)': 'schedule a new meeting', '(c)': 'cancel an existing meeting', '(q)': 'quit'}
         ui.print_schedule(file_name)
         ui.print_menu(menu_list)
-        user_answers = ui.user_input([''], "Make a choice:")
+        user_answers = ui.get_user_input([''], "Make a choice:")
         try:
             choose(user_answers, file_name)
         except KeyError as err:
