@@ -11,10 +11,11 @@ def schedule_a_new_meeting(file_name):
     user_data = ui.get_user_input(['Enter meeting title: ', 'Enter duration in hours (1 or 2): ',
                     'Enter start time: '], "")
     converted_user_input = scripts.convert_user_input(user_data)  # Validate and convert user input 
-    if converted_user_input:
+    is_duration_valid = scripts.is_duration(converted_user_input)
+    if converted_user_input and is_duration_valid:
         storage.write_data_to_file(file_name, user_data)
     else:
-        input('inappropriate time format. Press enter to try again...')
+        input('inappropriate time. Press enter to try again...')
         schedule_a_new_meeting(file_name)
 
 
@@ -46,7 +47,7 @@ def sort_schedule(schedule):
     return sorted_schedule
 
 
-# Convert user inputs to appropriate format
+# convert user inputs to appropriate format
 def convert_user_input(user_input):
     converted_user_input = []
     activity = user_input[0]
@@ -68,3 +69,10 @@ def convert_schedule(schedule):
         converted_meeting = convert_user_input(meeting)
         converted_schedule.append(converted_meeting)
     return converted_schedule
+
+
+# validate a meeting duration
+def is_duration(user_input):
+    meeting_duration = user_input[1]
+    if meeting_duration == 1 or meeting_duration == 2:
+        return True

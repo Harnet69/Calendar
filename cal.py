@@ -3,6 +3,7 @@ import ui
 import scripts
 
 
+# preform functionalities according to chosen menu's point
 def choose(user_answers, file_name):
     menu_item = user_answers[0]
     if menu_item == 's':
