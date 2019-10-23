@@ -4,11 +4,12 @@ import scripts
 
 
 def choose(user_answers, file_name):
-    if user_answers[0] == 's':
+    menu_item = user_answers[0]
+    if menu_item == 's':
         scripts.schedule_a_new_meeting(file_name)
-    if user_answers[0] == 'c':
+    if menu_item == 'c':
         scripts.cancel_an_existing_meeting(file_name)
-    if user_answers[0] == 'q':
+    if menu_item == 'q':
         os.sys.exit(0)
 
 

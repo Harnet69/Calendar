@@ -1,6 +1,7 @@
 import os
 import storage
 import ui
+import scripts
 
 
 def schedule_a_new_meeting(file_name):
@@ -8,7 +9,12 @@ def schedule_a_new_meeting(file_name):
     print("Schedule a new meeting.\n 'Give title, duration and start time of the meeting: ")
     user_data = ui.user_input(['Enter meeting title: ', 'Enter duration in hours (1 or 2): ',
                     'Enter start time: '], "")
-    storage.write_data_to_file(file_name, user_data)
+    converted_user_input = scripts.user_input_conversion(user_data)  # Validate and convert user input 
+    if converted_user_input:
+        storage.write_data_to_file(file_name, user_data)
+    else:
+        input('Wrong input. Press enter to try again...')
+        schedule_a_new_meeting(file_name)
 
 
 def cancel_an_existing_meeting(file_name):
@@ -37,9 +43,15 @@ def sort_schedule(schedule):  # TODO not working with str values, fix after an i
     return sorted_schedule
 
 
-def str_to_num_conversion(user_str):
+def user_input_conversion(user_input):
+    converted_user_input = []
+    activity = user_input[0]
+    converted_user_input.append(activity)
     try:
-        user_num = str(user_str)
-        return user_num
+        duration = int(user_input[1])
+        converted_user_input.append(duration)
+        start_time = int(user_input[2])
+        converted_user_input.append(start_time)
+        return converted_user_input
     except ValueError:
         return False
