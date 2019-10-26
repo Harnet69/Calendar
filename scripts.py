@@ -11,9 +11,11 @@ def schedule_a_new_meeting(file_name):
     user_data = ui.get_user_input(['Enter meeting title: ', 'Enter duration in hours (1 or 2): ',
                     'Enter start time: '], "")
     converted_user_input = scripts.convert_user_input(user_data)  # Validate and convert user input 
+    is_working_time = scripts.is_working_time(converted_user_input)  # is meeting in workhours
     is_duration_valid = scripts.is_duration(converted_user_input)  # is duration is 1 ot 2 hour
-    is_time_free = scripts.is_time_free(converted_user_input)
-    if converted_user_input and is_duration_valid and is_time_free:
+    is_time_free = scripts.is_time_free(converted_user_input, file_name)
+
+    if converted_user_input and is_working_time and is_duration_valid and is_time_free:
         storage.write_data_to_file(file_name, user_data)
     else:
         input('inappropriate time. Press enter to try again...')
@@ -63,13 +65,22 @@ def convert_user_input(user_input):
         return False
 
 
-#  Convert schedules list to appropriate format
+#  convert schedules list to appropriate format
 def convert_schedule(schedule):
     converted_schedule = []
     for meeting in schedule:
         converted_meeting = convert_user_input(meeting)
         converted_schedule.append(converted_meeting)
     return converted_schedule
+
+
+# check is meeting is in worktime (between 8 and 18)
+def is_working_time(user_input):
+    meeting_start = user_input[2]
+    meeting_duration = user_input[1]
+    meeting_finish = meeting_start + meeting_duration
+    if meeting_start > 8 or meeting_finish <= 18:
+        return True
 
 
 # validate a meeting duration
@@ -79,6 +90,21 @@ def is_duration(user_input):
         return True
 
 
+# get meeting time from schedule
+def get_meeting_timeline(schedule):
+    schedule_timeline = []
+    for meeting in schedule:
+        meeting_start = int(meeting[2])
+        meeting_duration = int(meeting[1])
+        schedule_timeline.extend(range(meeting_start, meeting_start + meeting_duration))
+    return schedule_timeline
+
+
 # check if time isn't occupied
-def is_time_free(user_input):
+def is_time_free(user_input, file_name):
+    schedule = sort_schedule(convert_schedule(storage.get_data_from_file(file_name)))
+    meeting_hours = get_meeting_timeline([user_input])
+    existing_meeting_timeline = get_meeting_timeline(schedule)
+    if any(elem in existing_meeting_timeline for elem in meeting_hours):  # check if time is free
+        return False
     return True
