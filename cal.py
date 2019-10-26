@@ -9,7 +9,7 @@ def choose(user_answers, file_name):
     if menu_item == 's':
         scripts.schedule_a_new_meeting(file_name)
     if menu_item == 'c':
-        scripts.cancel_an_existing_meeting(file_name)
+        scripts.cancel_a_meeting(file_name)
     if menu_item == 'q':
         os.sys.exit(0)
 
