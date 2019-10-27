@@ -79,7 +79,7 @@ def is_working_time(user_input):
     meeting_start = user_input[2]
     meeting_duration = user_input[1]
     meeting_finish = meeting_start + meeting_duration
-    if meeting_start > 8 or meeting_finish <= 18:
+    if meeting_start > 8 and meeting_finish <= 18:
         return True
 
 
