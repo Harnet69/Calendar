@@ -9,7 +9,7 @@ def choose(user_answers, file_name):
     if menu_item == 's':
         scripts.schedule_a_new_meeting(file_name)
     if menu_item == 'c':
-        scripts.cancel_a_meeting(file_name)
+        scripts.edit_a_meeting(file_name)
     if menu_item == 'q':
         os.sys.exit(0)
 
@@ -17,7 +17,8 @@ def choose(user_answers, file_name):
 def main():
     while True:
         file_name = 'schedule.csv'
-        menu_list = {'(s)': 'schedule a new meeting', '(c)': 'cancel an existing meeting', '(q)': 'quit'}
+        menu_list = {'(s)': 'schedule a new meeting','(e)': 'edit a meeting',
+                     '(c)': 'cancel a meeting', '(q)': 'quit'}
         ui.print_schedule(file_name)
         ui.print_menu(menu_list)
         user_answers = ui.get_user_input([''], "Make a choice:")

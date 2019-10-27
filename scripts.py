@@ -23,25 +23,26 @@ def schedule_a_new_meeting(file_name):
 
 
 # cancel a meeting
-def cancel_a_meeting(file_name):
+def edit_a_meeting(file_name, edit_mode="cancell"):
     print("Cancel an existing meeting.\n")
     user_time = ui.get_user_input(['Enter the start time: '], "")
-    meeting_time_to_calcell = str(user_time[0])
+    meeting_time_to_change = str(user_time[0])
     schedules_list = storage.get_data_from_file(file_name)
-    schedules_list_after_cancellation = []
-    cancelled_meetings = 0
-    for task in schedules_list:
-        start_time = task[2]
-        if meeting_time_to_calcell == str(start_time):
-            cancelled_meetings += 1
+    schedules_list_after_editing = []
+
+    if_meeting_exists = False
+    for meeting in schedules_list:
+        start_time = meeting[2]
+        if meeting_time_to_change == str(start_time) and edit_mode == "cancell":
+            if_meeting_exists = True
             continue
-        schedules_list_after_cancellation.append(task)
-    if not cancelled_meetings:
+        schedules_list_after_editing.append(meeting)
+    if not if_meeting_exists:
         print(f"ERROR: There is no meeting starting at the {time_to_delete} o'clock")
         input('Press enter to continue...')
         os.system('clear')
-        cancel_a_meeting(file_name)
-    storage.write_data_to_file(file_name, schedules_list_after_cancellation, False)
+        edit_a_meeting(file_name)
+    storage.write_data_to_file(file_name, schedules_list_after_editing, False)
 
 
 # sort schedule by start time
@@ -53,9 +54,9 @@ def sort_schedule(schedule):
 # convert user inputs to appropriate format
 def convert_user_input(user_input):
     converted_user_input = []
-    activity = user_input[0]
-    converted_user_input.append(activity)
     try:
+        activity = user_input[0].strip()
+        converted_user_input.append(activity)
         duration = int(user_input[1])
         converted_user_input.append(duration)
         start_time = int(user_input[2])
@@ -79,7 +80,7 @@ def is_working_time(user_input):
     meeting_start = user_input[2]
     meeting_duration = user_input[1]
     meeting_finish = meeting_start + meeting_duration
-    if meeting_start > 8 and meeting_finish <= 18:
+    if meeting_start >= 8 and meeting_finish <= 18:
         return True
 
 
